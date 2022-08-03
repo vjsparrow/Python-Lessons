@@ -31,16 +31,16 @@ class Solution:
             sclose = [')', '}', ']']
 
             open = ""
-            for i in range(len(s)):
-                if s[i] in sopen:
-                    open += s[i]
-                elif s[i] in sclose:
+            for item in s:
+                if item in sopen:
+                    open += item
+                elif item in sclose:
                     if open == "":
                         return False
                     else:
-                        if sopen.index(open[-1]) == sclose.index(s[i]):
+                        if sopen.index(open[-1]) == sclose.index(item):
                             open = open[:- 1]
-                        elif sopen.index(open[-1]) != sclose.index(s[i]):
+                        elif sopen.index(open[-1]) != sclose.index(item):
                             return False
             if open == "":
                 return True
