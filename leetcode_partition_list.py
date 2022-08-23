@@ -87,3 +87,43 @@ class Solution:
                 temp = temp.next
 
         return head
+
+       
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
+ 
+# Leetcode solution
+ 
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+
+        # Leetcode solution:
+                    
+        # Initialize a before and after list
+        before = before_head = ListNode(0)
+        after = after_head = ListNode(0)
+
+        # Iterate through the list to append each item to one of the above two lists
+        while head:
+            # If current node is less than x, we append it to before list
+            if head.val < x:
+                before.next = head
+                before = before.next
+            # If current node is greater than or equal to x, we append it to after list
+            else:
+                after.next = head
+                after = after.next
+
+            head = head.next
+
+        # Last node of the after list will be the last element of the list as well
+        after.next = None
+
+        # Now we join the two lists (remember to ignore the dummy head at the beginning of each list)
+        before.next = after_head.next
+
+        return before_head.next
