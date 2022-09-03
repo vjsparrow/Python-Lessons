@@ -63,8 +63,8 @@ graph1 = Graph(num_nodes, edges)
 # Traverse the graph using bfs
 (traversal, trav_bool) = bfs(graph1, 0)
 
-# Check for connected components and if found any, print it
 
+# Check for connected components
 # Created a connected components list and return it
 conn_comp = []
 
