@@ -1,7 +1,7 @@
 # List all connected components of a graph
 
-# Implement a graph using adjacency lists
 
+# Implement a graph using adjacency lists
 class Graph():
     def __init__(self, num_nodes, edges):
         self.num_nodes = num_nodes
@@ -17,8 +17,8 @@ class Graph():
     def __str__(self):
         return self.__repr__()
 
+    
 # Define function to traverse the graph using breadth-first search algorithm
-
 def bfs(graph, root):
     # Create a queue
     queue = []
@@ -50,11 +50,11 @@ def bfs(graph, root):
 
 # Create a graph object
 
-# 3 Connected components
+# Test case 1: 3 Connected components
 num_nodes = 9
 edges = [(0, 1), (0, 3), (1, 2), (2, 3), (4, 5), (4, 6), (5, 6), (7, 8)]
 
-# Whole graph is connected (1 connected component)
+# Test Case 2: Whole graph is connected (1 connected component)
 # num_nodes = 5
 # edges = [(0, 1), (0,4), (1, 2), (1, 3), (1, 4), (2, 3), (3, 4)]
 
