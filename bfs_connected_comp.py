@@ -1,88 +1,76 @@
-# List all connected components of a graph
+# Find the connected components of a graph using BFS
 
 
-# Implement a graph using adjacency lists
-class Graph():
-    def __init__(self, num_nodes, edges):
+# Implement the graph
+class Graph_adj_list:
+    def __init__(self, num_nodes, edges, directed = False):
         self.num_nodes = num_nodes
+        self.directed = directed
         self.edges = [[] for _ in range(num_nodes)]
-
-        for n1, n2 in edges:
-            self.edges[n1].append(n2)
-            self.edges[n2].append(n1)
+        for (e1, e2) in edges:
+            self.edges[e1].append(e2)
+            if not self.directed:
+                self.edges[e2].append(e1)
     
     def __repr__(self):
-        return('\n'.join([f'node{node}: {neighbor}' for node, neighbor in enumerate(self.edges)]))
+        return('\n'.join([f'{node}: {neighbor}' for node, neighbor in enumerate(self.edges)]))
     
     def __str__(self):
         return self.__repr__()
 
-    
-# Define function to traverse the graph using breadth-first search algorithm
+
+# Traverse the graph using BFS and return the visited status
 def bfs(graph, root):
-    # Create a queue
-    queue = []
+    # Implement a queue
+    from collections import deque
+    queue = deque()
+    
+    # Track visited items
+    visited = [False] * graph.num_nodes
 
-    # Track whether each node is traversed 
-    traversed = [False] * len(graph.edges)
-
-    # Set index to traverse the queue
-    indx = 0
-
-    # Begin traversal. Set the root node to 'traversed' and enqueue it.
-    traversed[root] = True
+    # Begin traversal
     queue.append(root)
+    visited[root] = True
 
-    while indx < len(queue):
-        # Store the current element and point the index to the next element
-        current = queue[indx]
-        indx += 1
+    while len(queue) > 0:
+        # Extract the leftmost element of the queue
+        node = queue.popleft()
 
-        # Check whether any neighbor of the current element is not traversed yet
-        for neighbor in graph.edges[current]:
-            if not traversed[neighbor]:
-                # Set the node to 'traversed'
-                traversed[neighbor] = True
-                # Enqueue it
+        # Explore all unvisited neighbors of the current node and add them to the queue
+        for neighbor in graph.edges[node]:
+            if not visited[neighbor]:
+                visited[neighbor] = True
                 queue.append(neighbor)
-    return (queue, traversed)
+    
+    return visited
 
 
-# Create a graph object
+# Find the number of connected components
+def connected_components(graph):
+    components = {}
+    for i in range(graph.num_nodes):
+        components[i] = -1
+    
+    (current_comp_id, count_of_seen_nodes) = (0, 0)
 
-# Test case 1: 3 Connected components
-num_nodes = 9
-edges = [(0, 1), (0, 3), (1, 2), (2, 3), (4, 5), (4, 6), (5, 6), (7, 8)]
-
-# Test Case 2: Whole graph is connected (1 connected component)
-# num_nodes = 5
-# edges = [(0, 1), (0,4), (1, 2), (1, 3), (1, 4), (2, 3), (3, 4)]
-
-graph1 = Graph(num_nodes, edges)
-
-# Traverse the graph using bfs
-(traversal, trav_bool) = bfs(graph1, 0)
-
-
-# Check for connected components
-# Created a connected components list and return it
-conn_comp = []
-
-# Append the current traversal list to it (if the entire graph is traversed, it would be appended right here)
-conn_comp.append(traversal)
+    while count_of_seen_nodes < graph.num_nodes:
+        root = min([node for node in range(graph.num_nodes) if components[node] == -1])
+        visited_nodes = bfs(graph, root)
+        for node in range(len(visited_nodes)):
+            if visited_nodes[node]:
+                components[node] = current_comp_id
+                count_of_seen_nodes += 1
+        current_comp_id += 1
+    
+    return (components)
 
 
-# Check if the entire graph is traversed
-if len(traversal) != num_nodes:
-    i = 0
-    # Get to the next undiscovered node
-    while i < len(trav_bool):
-        if trav_bool[i] == True:
-            i += 1
-        else:
-            # This is the next undiscovered node. Traverse the graph using bfs with this as the root node.
-            root = i
-            (traversal, trav_bool) = bfs(graph1, root)
-            # Append the new nodes traversed (new connected component) to the conn_comp list
-            conn_comp.append(traversal)
-print(conn_comp)
+# Creating graph objects and calling the functions
+
+num_nodes = 6
+edges = [(0, 1), (0, 3), (0, 4), (1, 5), (2, 3), (2, 5), (4, 5)]
+print("-----------------Adjacency List using Lists------------------")
+graph1 = Graph_adj_list(num_nodes, edges)
+print(graph1)
+print(graph1.edges)
+print(connected_components(graph1))
